@@ -14,29 +14,45 @@
 #include <QTimer>
 #include <QToolBar>
 #include <QToolButton>
-class Series
-{
-public:
-   Series();
-   void generateAndAddData();
-   void updateList();
-   void initialList();
-   void createSeriesLine();
-   QtCharts::QLineSeries *getSeries();
-   void updateSeriesLine(bool updateData);
-   void updateColor(QColor col);
-   void updateThickness(int thick);
-   int findMin();
-   int findMax();
 
-   int getThickness() const;
-   const QColor &getColor() const;
+class Series: public QObject
+{
+  Q_OBJECT
+
+public:
+  Series(QObject *parent = nullptr);
+
+  void                   generateAndAddData();
+
+  void                   updateList();
+
+  void                   initialList();
+
+  void                   createSeriesLine();
+
+  QtCharts::QLineSeries* getSeries();
+
+  void                   updateSeriesLine(bool updateData);
+
+  void                   updateColor(QColor col);
+
+  void                   updateThickness(int thick);
+
+  int                    findMin();
+
+  int                    findMax();
+
+  int                    getThickness() const;
+
+  const QColor&          getColor() const;
 
 private:
-   QList<QPointF>        Datas;
-   QtCharts::QLineSeries *series;
-   int                   Thickness = 1;
-   QColor                Color     = Qt::black;
+  QList<QPointF>         Datas;
+  QtCharts::QLineSeries *series;
+  int                    Thickness = 1;
+  QColor                 Color     = Qt::black;
 };
+
+// Q_DECLARE_METATYPE(Series)
 
 #endif // SERIES_H

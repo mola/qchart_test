@@ -1,126 +1,118 @@
 #include "series.h"
 
-Series::Series()
+Series::Series(QObject *parent):
+  QObject(parent)
 {
-   initialList();
-   series = new QtCharts::QLineSeries();
+  initialList();
+  series = new QtCharts::QLineSeries();
 }
 
-
-void Series::updateList()
+void  Series::updateList()
 {
-   for (int i = 0; i < this->Datas.size(); i++)
-   {
-      int second = (rand() % 100) + 1;
-      Datas[i] = QPoint(i, second);
-   }
+  for (int i = 0; i < this->Datas.size(); i++)
+  {
+    int  second = (rand() % 100) + 1;
+    Datas[i] = QPoint(i, second);
+  }
 }
 
-
-void Series::generateAndAddData()
+void  Series::generateAndAddData()
 {
-   for (int i = 0; i < 3600; i++)
-   {
-      int first  = i;
-      int second = (rand() % 100) + 1;
-      Datas[i] = QPoint(first, second);
-      series->append(first, second);
-   }
+  for (int i = 0; i < 3600; i++)
+  {
+    int  first  = i;
+    int  second = (rand() % 100) + 1;
+    Datas[i] = QPoint(first, second);
+    series->append(first, second);
+  }
 }
 
-
-void Series::initialList()
+void  Series::initialList()
 {
-   for (int i = 0; i < 3600; i++)
-   {
-      Datas.push_back(QPoint(i, 0));
-   }
+  for (int i = 0; i < 3600; i++)
+  {
+    Datas.push_back(QPoint(i, 0));
+  }
 }
 
-
-QtCharts::QLineSeries *Series::getSeries()
+QtCharts::QLineSeries * Series::getSeries()
 {
-   return(series);
+  return series;
 }
 
-
-void Series::updateColor(QColor col)
+void  Series::updateColor(QColor col)
 {
-   this->Color = col;
+  this->Color = col;
 }
 
-
-void Series::updateThickness(int thick)
+void  Series::updateThickness(int thick)
 {
-   this->Thickness = thick;
+  this->Thickness = thick;
 }
 
-
-int Series::findMin()
+int  Series::findMin()
 {
-   int min = MAX_INPUT;
+  int  min = MAX_INPUT;
 
-   for (int i = 0; i < Datas.size(); i++)
-   {
-      int t = Datas[i].ry();
+  for (int i = 0; i < Datas.size(); i++)
+  {
+    int  t = Datas[i].ry();
 
-      if (Datas[i].y() < min)
-      {
-         min = Datas[i].y();
-      }
-   }
+    if (Datas[i].y() < min)
+    {
+      min = Datas[i].y();
+    }
+  }
 
-   return(min);
+  return min;
 }
 
-
-int Series::findMax()
+int  Series::findMax()
 {
-   int max = -1;
+  int  max = -1;
 
-   for (int i = 0; i < Datas.size(); i++)
-   {
-      if (Datas[i].y() > max)
-      {
-         max = Datas[i].y();
-      }
-   }
+  for (int i = 0; i < Datas.size(); i++)
+  {
+    if (Datas[i].y() > max)
+    {
+      max = Datas[i].y();
+    }
+  }
 
-   return(max);
+  return max;
 }
 
-int Series::getThickness() const
+int  Series::getThickness() const
 {
-    return Thickness;
+  return Thickness;
 }
 
-const QColor &Series::getColor() const
+const QColor& Series::getColor() const
 {
-    return Color;
+  return Color;
 }
 
-
-void Series::updateSeriesLine(bool updateData)
+void  Series::updateSeriesLine(bool updateData)
 {
-   if (updateData)
-   {
-      updateList();
-      series->replace(Datas);
-   }
-   QPen pen;
+  if (updateData)
+  {
+    updateList();
+    series->replace(Datas);
+  }
 
-   pen.setWidth(this->Thickness);
-   series->setPen(pen);
-   series->setColor(this->Color);
+  QPen  pen;
+
+  pen.setWidth(this->Thickness);
+  series->setPen(pen);
+  series->setColor(this->Color);
 }
 
-
-void Series::createSeriesLine()
+void  Series::createSeriesLine()
 {
-   generateAndAddData();
-   QPen pen;
+  generateAndAddData();
+  QPen  pen;
 
-   pen.setWidth(this->Thickness);
-   series->setPen(pen);
-   series->setColor(this->Color);
+  pen.setWidth(this->Thickness);
+  series->setPen(pen);
+  series->setColor(this->Color);
 }

@@ -2,19 +2,21 @@
 #define SPINBOXTHICK_H
 
 #include <iostream>
-#include <QStyledItemDelegate>
+#include <QItemDelegate>
 
-class SpinBoxThick : public QStyledItemDelegate
+
+class SpinBoxThick: public QItemDelegate
 {
 public:
-   SpinBoxThick(QObject *parent = nullptr);
+  SpinBoxThick(QObject *parent = nullptr);
 
-   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+  QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
-   void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-   void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+  void     setEditorData(QWidget *editor, const QModelIndex &index) const override;
 
-   void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+  void     setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+
+  void     updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
 

@@ -10,20 +10,18 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    datamodelseries.cpp \
+    colordelegate.cpp \
     main.cpp \
     mainwindow.cpp \
     series.cpp \
-    spinboxthick.cpp \
-    tablemodelseries.cpp
+    spinboxthick.cpp
 
 
 HEADERS += \
-    datamodelseries.h \
+    colordelegate.h \
     mainwindow.h \
     series.h \
-    spinboxthick.h \
-    tablemodelseries.h
+    spinboxthick.h
 
 
 FORMS += \

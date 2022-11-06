@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <chartview.h>
 #include <colordelegate.h>
 #include <cstdlib>
 #include <ctime>
@@ -78,32 +79,44 @@ private slots:
 
    void on_AutoScale_clicked();
 
+   void on_rngXstartPointRight_valueChanged(int arg1);
+
+   void on_rngXstopPointRight_valueChanged(int arg1);
+
+
+   void on_VerticalThreshold_triggered(bool checked);
+
+   void on_HorizontalThreshold_triggered(bool checked);
+
 private:
-   Ui::MainWindow          *ui;
+   Ui::MainWindow        *ui;
 // TableModelSeries *TableSeries;
-   QStandardItemModel      *TableSeries = nullptr;
-   QVBoxLayout             *layout;
-   QtCharts::QChartView    *chartView;
-   QtCharts::QLineSeries   *series;
-   Series                  *currentSeries;
-   QList<Series *>         SeriesList;
-   QtCharts::QChart        *chart;
-   QtCharts::QCategoryAxis *axisX;
-   QtCharts::QCategoryAxis *axisY;
-   QPushButton             *target;
-   QAction                 *TimerAction;
-   int                     TimerState = 0;
-   QTimer                  *timer;
-   int                     timeOut        = 200;
-   bool                    timerIsOn      = false;
-   int                     rngXstartPoint = 0;
-   int                     rngXstopPoint  = 3600;
-   int                     rngYstartPoint = 0;
-   int                     rngYstopPoint  = 100;
-   QToolBar                *toolBar;
-   QColorDialog            *colorPalette;
-   QTableView              SeriesTable;
-   SpinBoxThick            *SpinBoxDelegate;
-   colorDelegate           *colorDelegateBox;
+   QStandardItemModel    *TableSeries = nullptr;
+   QVBoxLayout           *layout;
+   ChartView             *chartView;
+   QtCharts::QLineSeries *series;
+   Series                *currentSeries;
+   QList<Series *>       SeriesList;
+   QtCharts::QChart      *chart;
+   QtCharts::QValueAxis  *axisX;
+   QtCharts::QValueAxis  *axisYLeft;
+   QtCharts::QValueAxis  *axisYRight;
+   QPushButton           *target;
+   QAction               *TimerAction;
+   int                   TimerState = 0;
+   QTimer                *timer;
+   int                   timeOut             = 200;
+   bool                  timerIsOn           = false;
+   int                   rngXstartPoint      = 0;
+   int                   rngXstopPoint       = 3600;
+   int                   rngYstartPointLeft  = 0;
+   int                   rngYstopPointLeft   = 100;
+   int                   rngYstartPointRight = 0;
+   int                   rngYstopPointRight  = 100;
+   QToolBar              *toolBar;
+   QColorDialog          *colorPalette;
+   QTableView            SeriesTable;
+   SpinBoxThick          *SpinBoxDelegate;
+   colorDelegate         *colorDelegateBox;
 };
 #endif // MAINWINDOW_H

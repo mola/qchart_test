@@ -102,7 +102,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Range Y from</string>
+         <string>Range Y from Left</string>
         </property>
        </widget>
       </item>
@@ -151,6 +151,45 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Range Y from Righy</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="rngXstartPointRight"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>to</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="rngXstopPointRight">
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -163,19 +202,6 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <widget class="QLabel" name="label_5">
-         <property name="geometry">
-          <rect>
-           <x>80</x>
-           <y>300</y>
-           <width>271</width>
-           <height>17</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
        </widget>
       </item>
      </layout>
@@ -257,6 +283,60 @@
     </item>
    </layout>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="VerticalThreshold"/>
+   <addaction name="separator"/>
+   <addaction name="HorizontalThreshold"/>
+  </widget>
+  <action name="VerticalThreshold">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="face-cool">
+     <selectedon>../verticalLine.png</selectedon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>|</string>
+   </property>
+   <property name="toolTip">
+    <string>Vertical-Threshold</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="HorizontalThreshold">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="audio-volume-high">
+     <normaloff>../horizentalLine.png</normaloff>../horizentalLine.png</iconset>
+   </property>
+   <property name="text">
+    <string>----</string>
+   </property>
+   <property name="toolTip">
+    <string>Horizontal-Threshold</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

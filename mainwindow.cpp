@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QGraphicsSceneMouseEvent>
+
 MainWindow::MainWindow(QWidget *parent)
    : QMainWindow(parent)
    , ui(new Ui::MainWindow)
@@ -26,8 +28,9 @@ void MainWindow::configure()
 
    // series                             = //defualt
    this->chart = new QtCharts::QChart();
-   axisX       = new QtCharts::QCategoryAxis();
-   axisY       = new QtCharts::QCategoryAxis();
+   axisX       = new QtCharts::QValueAxis();
+   axisYLeft   = new QtCharts::QValueAxis();
+   axisYRight  = new QtCharts::QValueAxis();
    this->timer = new QTimer(this);
 
    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(updateChart()));
@@ -52,7 +55,6 @@ void MainWindow::createStandardItem(QString Name)
    item0->setData(QVariant::fromValue(currentSeries), 1000);
    items << item0 << item1 << item2;
    TableSeries->insertRow(currentSeries->getId(), items);
-   //TableSeries->setData()
 }
 
 
@@ -71,7 +73,6 @@ void MainWindow::itemChangedSeries(QStandardItem *item)
    if (item->column() == 1)
    {
       auto item0 = TableSeries->item(item->row(), 0);
-      // auto          item_1      = TableSeries->takeItem(item->row(), 0);
       auto s     = item0->data(1000).value<Series *>();
       auto color = item->data(Qt::BackgroundColorRole).value<QColor>();
       s->updateColor(color);
@@ -95,15 +96,14 @@ void MainWindow::tableViewSeriesConfigure()
    ui->SeriesTable->setItemDelegateForColumn(1, colorDelegateBox);
    ui->SeriesTable->setItemDelegateForColumn(2, SpinBoxDelegate);
    createStandardItem("Series 1");
-// TableSeries->TableModelSeries::insertRow("Item", currentSeries->getColor());
-// ui->SeriesTable->horizontalHeader()->setSectionHidden(QHeaderView::ResizeToContents);
 }
 
 
 void MainWindow::updateChartSeries(bool updateData)
 {
    axisX->setRange(this->rngXstartPoint, this->rngXstopPoint);
-   axisY->setRange(this->rngYstartPoint, this->rngYstopPoint);
+   axisYLeft->setRange(this->rngYstartPointLeft, this->rngYstopPointLeft);
+   axisYRight->setRange(this->rngYstartPointRight, this->rngYstopPointRight);
 
    for (int i = 0; i < SeriesList.size(); i++)
    {
@@ -168,12 +168,21 @@ void MainWindow::createChartSeries()
    chart->createDefaultAxes();
    addToolBar();
 
-   chartView = new QtCharts::QChartView(chart);
-   chart->addAxis(axisX, Qt::AlignBottom);
-   chart->addAxis(axisY, Qt::AlignLeft);
+   // chartView = new QtCharts::QChartView(chart);
+   chartView = new ChartView(chart);
+   chart->setAxisX(axisX);
+   chart->setAxisY(axisYLeft);
+   chart->addAxis(axisYRight, Qt::AlignRight);
+
+
+   auto s = chartView->scene();
+
+
+   QGraphicsSceneMouseEvent mouse;
+
 
    SeriesList[0]->getSeries()->attachAxis(axisX);
-   SeriesList[0]->getSeries()->attachAxis(axisY);
+   SeriesList[0]->getSeries()->attachAxis(axisYLeft);
 
    chartView->setRenderHint(QPainter::Antialiasing);
 //! [4]
@@ -228,13 +237,13 @@ void MainWindow::on_rangeXstopPoint_valueChanged(int arg1)
 
 void MainWindow::on_rngYstartPoint_valueChanged(int arg1)
 {
-   this->rngYstartPoint = arg1;
+   this->rngYstartPointLeft = arg1;
 }
 
 
 void MainWindow::on_rngYstopPoint_valueChanged(int arg1)
 {
-   this->rngYstopPoint = arg1;
+   this->rngYstopPointLeft = arg1;
 }
 
 
@@ -251,7 +260,18 @@ void MainWindow::on_AddSeries_clicked()
    currentSeries->createSeriesLine();
    chart->addSeries(currentSeries->getSeries());
    currentSeries->getSeries()->attachAxis(axisX);
-   currentSeries->getSeries()->attachAxis(axisY);
+
+   if (currentSeries->getId() % 2)
+   {
+      currentSeries->getSeries()->attachAxis(axisYLeft);
+   }
+   else
+   {
+      // axisYRight->setRange(0, 100);
+      axisYRight->setLinePenColor(Qt::blue);
+      //axisYRight->setGridLinePen((currentSeries->getSeries()->pen()));
+      currentSeries->getSeries()->attachAxis(axisYRight);
+   }
    int     num  = SeriesList.size();
    QString Item = "Series " + QVariant(num).toString();
 
@@ -281,7 +301,45 @@ void MainWindow::on_AutoScale_clicked()
       Max = std::max(Max, tempMax);
    }
 
-   this->rngYstartPoint = Min;
-   this->rngYstopPoint  = Max;
+   this->rngYstartPointLeft = Min;
+   this->rngYstopPointRight = Max;
    updateChartSeries(false);
+}
+
+
+void MainWindow::on_rngXstartPointRight_valueChanged(int arg1)
+{
+   this->rngYstartPointRight = arg1;
+}
+
+
+void MainWindow::on_rngXstopPointRight_valueChanged(int arg1)
+{
+   this->rngYstopPointRight = arg1;
+}
+
+
+void MainWindow::on_VerticalThreshold_triggered(bool checked)
+{
+   if (checked)
+   {
+      chartView->setMode(InsertThresholdVer);
+   }
+   else
+   {
+      chartView->setMode(None);
+   }
+}
+
+
+void MainWindow::on_HorizontalThreshold_triggered(bool checked)
+{
+   if (checked)
+   {
+      chartView->setMode(InsertThresholdHri);
+   }
+   else
+   {
+      chartView->setMode(None);
+   }
 }

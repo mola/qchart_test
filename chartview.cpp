@@ -2,6 +2,7 @@
 
 
 #include <QGraphicsItem>
+#include <QMenu>
 #include "graphicsitem.h"
 
 ChartView::ChartView(QtCharts::QChart *chart, QWidget *parent):
@@ -58,6 +59,16 @@ void  ChartView::addNode()
 
     g->setPos(10, 10);
     scene()->addItem(g);
+
+    connect(g, &GraphicsItem::contextMenu, this, [this]()
+    {
+        GraphicsItem *item = qobject_cast<GraphicsItem *>(sender());
+
+        if (item)
+        {
+            item->showMenu();
+        }
+    });
 }
 
 void  ChartView::mousePressEvent(QMouseEvent *mouseEvent)

@@ -12,12 +12,16 @@ class GraphicsItem: public QObject, public QGraphicsItem
 public:
     GraphicsItem();
 
+    ~GraphicsItem();
+
     // QGraphicsItem interface
 
 public:
     QRectF  boundingRect() const;
 
     void    paintLine(QPainter *painter, QLine line);
+
+    void    showMenu();
 
 signals:
     void    selected();

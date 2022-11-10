@@ -1,13 +1,21 @@
 #include "graphicsitem.h"
 
 #include <QGraphicsSceneContextMenuEvent>
+#include <QMenu>
 #include <QPainter>
 #include <QStyle>
+#include <QGraphicsScene>
 #include <QStyleOptionGraphicsItem>
+#include <iostream>
 
 GraphicsItem::GraphicsItem()
 {
     setFlag(QGraphicsItem::ItemIsSelectable, true);
+}
+
+GraphicsItem::~GraphicsItem()
+{
+    std::cout << "POAAAAAAAAAAK SHOD " << std::endl;
 }
 
 QRectF  GraphicsItem::boundingRect() const
@@ -19,6 +27,19 @@ QRectF  GraphicsItem::boundingRect() const
 
 void  GraphicsItem::paintLine(QPainter *painter, QLine line)
 {
+}
+
+void  GraphicsItem::showMenu()
+{
+    auto     menu = QMenu();
+    QAction *act  = menu.addAction("Delete");
+
+    QObject::connect(act, &QAction::triggered, [this]()
+    {
+        scene()->removeItem(this);
+        deleteLater();
+    });
+    menu.exec(QCursor::pos());
 }
 
 void  GraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

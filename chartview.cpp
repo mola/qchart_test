@@ -2,148 +2,153 @@
 
 
 #include <QGraphicsItem>
-ChartView::ChartView(QtCharts::QChart *chart, QWidget *parent)
-   : QtCharts::QChartView(chart, parent)
+#include "graphicsitem.h"
+
+ChartView::ChartView(QtCharts::QChart *chart, QWidget *parent):
+    QtCharts::QChartView(chart, parent)
 {
-   this->setMouseTracking(true);
-   mousePressed = false;
+    this->setMouseTracking(true);
+    mousePressed = false;
 
 
-   m_nPTargetPixmap = QPixmap(20, 20);
+    m_nPTargetPixmap = QPixmap(20, 20);
 }
 
-
-void ChartView::deletItem()
+void  ChartView::deletItem()
 {
-   auto selectedItems = scene()->selectedItems();
+    auto  selectedItems = scene()->selectedItems();
 
-   // auto itemes        = scene()->items();
+    // auto itemes        = scene()->items();
 
-   //QDebug(selectedItems.size());
-   qDebug() << selectedItems.size();
-   //qDebug() << itemes.size();
+    // QDebug(selectedItems.size());
+    qDebug() << selectedItems.size();
+    // qDebug() << itemes.size();
 
-   for (QGraphicsItem *item : qAsConst(selectedItems))
-   {
-      scene()->removeItem(item);
-      delete item;
-   }
+    for (QGraphicsItem *item : qAsConst(selectedItems))
+    {
+        scene()->removeItem(item);
+        delete item;
+    }
 }
 
-
-void ChartView::insertLineVer(QMouseEvent *mouseEvent)
+void  ChartView::insertLineVer(QMouseEvent *mouseEvent)
 {
-   auto s        = this->scene();
-   auto posMouse = mouseEvent->pos().x();
+    auto  s        = this->scene();
+    auto  posMouse = mouseEvent->pos().x();
 
-
-   s->addItem(new LineItem(posMouse, 0, posMouse, 800));
+    s->addItem(new LineItem(posMouse, 0, posMouse, 800));
 }
 
-
-void ChartView::insertLineHri(QMouseEvent *mouseEvent)
+void  ChartView::insertLineHri(QMouseEvent *mouseEvent)
 {
-   auto s        = this->scene();
-   auto posMouse = mouseEvent->pos().y();
+    auto  s        = this->scene();
+    auto  posMouse = mouseEvent->pos().y();
 
-
-   s->addItem(new LineItem(0, posMouse, 1000, posMouse));
+    s->addItem(new LineItem(0, posMouse, 1000, posMouse));
 }
 
-
-void ChartView::setMode(Mode m)
+void  ChartView::setMode(Mode m)
 {
-   this->mode = m;
+    this->mode = m;
 }
 
-
-void ChartView::mousePressEvent(QMouseEvent *mouseEvent)
+void  ChartView::addNode()
 {
-   auto s = this->scene();
+    auto  g = new GraphicsItem();
 
-   if (mouseEvent->button() != Qt::LeftButton)
-   {
-      deletItem();
-      return;
-   }
-   QPen pen = QPen(Qt::green, 10);
+    g->setPos(10, 10);
+    scene()->addItem(g);
+}
 
-   switch (mode)
-   {
-   case InsertThresholdVer:
-      insertLineVer(mouseEvent);
-      break;
+void  ChartView::mousePressEvent(QMouseEvent *mouseEvent)
+{
+    auto  s = this->scene();
 
-   case InsertThresholdHri:
-      insertLineHri(mouseEvent);
-      break;
+    if (mouseEvent->button() != Qt::LeftButton)
+    {
+        deletItem();
 
-   case InsertLine:
-      mLine.setP1(mouseEvent->pos());
-      mLine.setP2(mouseEvent->pos());
-      line = new LineItem(mLine);
-      line->setPen(pen);
-      s->addItem(line);
+        return;
+    }
 
-      break;
+    QPen  pen = QPen(Qt::green, 10);
 
+    switch (mode)
+    {
+    case InsertThresholdVer:
+        insertLineVer(mouseEvent);
+        break;
 
-   default:
-      break;
-   }
-   //Mouse is pressed for the first time
-   mousePressed = true;
+    case InsertThresholdHri:
+        insertLineHri(mouseEvent);
+        break;
 
-   //set the initial line points, both are same
-//   if (selectedTool == 1)
-//   {
-//      mRect.setTopLeft(mouseEvent->pos());
-//      mRect.setBottomRight(mouseEvent->pos());
-//   }
+    case InsertLine:
+        mLine.setP1(mouseEvent->pos());
+        mLine.setP2(mouseEvent->pos());
+        line = new LineItem(mLine);
+        line->setPen(pen);
+        s->addItem(line);
 
+        break;
 
-//QGraphicsScene::mousePressEvent(mouseEvent);
+    default:
+        QChartView::mousePressEvent(mouseEvent);
+        break;
+    }
+
+    // Mouse is pressed for the first time
+    mousePressed = true;
+
+    // set the initial line points, both are same
+// if (selectedTool == 1)
+// {
+// mRect.setTopLeft(mouseEvent->pos());
+// mRect.setBottomRight(mouseEvent->pos());
+// }
+
+// QGraphicsScene::mousePressEvent(mouseEvent);
 } // ChartView::mousePressEvent
 
-
-void ChartView::mouseReleaseEvent(QMouseEvent *event)
+void  ChartView::mouseReleaseEvent(QMouseEvent *event)
 {
-   //When mouse is released update for the one last time
+    // When mouse is released update for the one last time
 
-   mousePressed = false;
-   update();
+    mousePressed = false;
+    update();
+    QChartView::mouseReleaseEvent(event);
 }
 
-
-void ChartView::mouseMoveEvent(QMouseEvent *event)
+void  ChartView::mouseMoveEvent(QMouseEvent *event)
 {
-   //As mouse is moving set the second point again and again
-   // and update continuously
-   if (!mousePressed)
-   {
-      return;
-   }
+    // As mouse is moving set the second point again and again
+    // and update continuously
+    if (!mousePressed)
+    {
+        return;
+    }
 
-   switch (mode)
-   {
-   case InsertLine:
+    switch (mode)
+    {
+    case InsertLine:
 
-      if (line != nullptr)
-      {
-         mLine.setP2(event->pos());
-         line->setLine(mLine);
-      }
-      break;
+        if (line != nullptr)
+        {
+            mLine.setP2(event->pos());
+            line->setLine(mLine);
+        }
 
-   default:
-      break;
-   }
-//      if (selectedTool == 1)
-//      {
-//         mRect.setBottomRight(event->pos());
-//      }
+        break;
 
+    default:
+        break;
+    }
 
-   //it calls the paintEven() function continuously
-   update();
+// if (selectedTool == 1)
+// {
+// mRect.setBottomRight(event->pos());
+// }
+
+    // it calls the paintEven() function continuously
+    update();
 }

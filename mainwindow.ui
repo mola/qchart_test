@@ -301,6 +301,7 @@
    <addaction name="HorizontalThreshold"/>
    <addaction name="separator"/>
    <addaction name="actionLine"/>
+   <addaction name="actionaddNode"/>
   </widget>
   <action name="VerticalThreshold">
    <property name="checkable">
@@ -354,6 +355,11 @@
    </property>
    <property name="toolTip">
     <string>line</string>
+   </property>
+  </action>
+  <action name="actionaddNode">
+   <property name="text">
+    <string>addNode</string>
    </property>
   </action>
  </widget>

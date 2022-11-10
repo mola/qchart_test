@@ -11,49 +11,54 @@
 
 enum Mode
 {
-   InsertRec,
-   InsertCirle,
-   InsertText,
-   InsertLine,
-   InsertThresholdVer,
-   InsertThresholdHri,
-   None
+    InsertRec,
+    InsertCirle,
+    InsertText,
+    InsertLine,
+    InsertThresholdVer,
+    InsertThresholdHri,
+    None
 };
-class ChartView : public QtCharts::QChartView
+
+class ChartView: public QtCharts::QChartView
 {
 public:
-   ChartView(QtCharts::QChart *chart, QWidget *parent = 0);
+    ChartView(QtCharts::QChart *chart, QWidget *parent = 0);
 
-   void deletItem();
+    void  deletItem();
 
+    // QWidget interface
+    void  insertLineVer(QMouseEvent *mouseEvent);
 
-   // QWidget interface
-   void insertLineVer(QMouseEvent *mouseEvent);
-   void insertLineHri(QMouseEvent *mouseEvent);
-   void setMode(Mode m);
+    void  insertLineHri(QMouseEvent *mouseEvent);
+
+    void  setMode(Mode m);
+
+    void  addNode();
 
 protected:
-   void mousePressEvent(QMouseEvent *event);
-   void mouseMoveEvent(QMouseEvent *event);
+    void  mousePressEvent(QMouseEvent *event);
 
-   // void paintEvent(QPaintEvent *event);
-   void mouseReleaseEvent(QMouseEvent *event);
+    void  mouseMoveEvent(QMouseEvent *event);
+
+    // void paintEvent(QPaintEvent *event);
+    void  mouseReleaseEvent(QMouseEvent *event);
 
 private:
-   Mode          mode = None;
-   QPoint        m_mousPos;
-   bool          mousePressed;
-   QPainter      *painter;
-   QGraphicsItem *itemToDraw;
-   QLine         mLine;
-   LineItem      *line;
-   QRect         mRect;
-   QPixmap       m_nPTargetPixmap;
+    Mode           mode = None;
+    QPoint         m_mousPos;
+    bool           mousePressed;
+    QPainter      *painter;
+    QGraphicsItem *itemToDraw;
+    QLine          mLine;
+    LineItem      *line;
+    QRect          mRect;
+    QPixmap        m_nPTargetPixmap;
 
 
-   // QWidget interface
+    // QWidget interface
 
-   // QGraphicsView interface
+    // QGraphicsView interface
 };
 
 #endif // CHARTVIEW_H

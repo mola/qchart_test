@@ -202,6 +202,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
@@ -296,6 +299,8 @@
    <addaction name="VerticalThreshold"/>
    <addaction name="separator"/>
    <addaction name="HorizontalThreshold"/>
+   <addaction name="separator"/>
+   <addaction name="actionLine"/>
   </widget>
   <action name="VerticalThreshold">
    <property name="checkable">
@@ -306,8 +311,7 @@
    </property>
    <property name="icon">
     <iconset theme="face-cool">
-     <selectedon>../verticalLine.png</selectedon>
-    </iconset>
+     <normaloff>../verticalLine.png</normaloff>../verticalLine.png</iconset>
    </property>
    <property name="text">
     <string>|</string>
@@ -335,6 +339,21 @@
    </property>
    <property name="visible">
     <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../line.png</normaloff>../line.png</iconset>
+   </property>
+   <property name="text">
+    <string>Line</string>
+   </property>
+   <property name="toolTip">
+    <string>line</string>
    </property>
   </action>
  </widget>

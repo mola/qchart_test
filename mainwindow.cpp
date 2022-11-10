@@ -25,7 +25,9 @@ void MainWindow::configure()
    SeriesList.push_back(new Series());
    currentSeries = SeriesList[0];
    tableViewSeriesConfigure();
-
+   deleteAction = new QAction(tr("&Delete"), this);
+   deleteAction->setShortcut(QKeySequence::Delete);
+   deleteAction->setStatusTip(tr("Delete item from diagram"));
    // series                             = //defualt
    this->chart = new QtCharts::QChart();
    axisX       = new QtCharts::QValueAxis();
@@ -169,7 +171,9 @@ void MainWindow::createChartSeries()
    addToolBar();
 
    // chartView = new QtCharts::QChartView(chart);
-   chartView = new ChartView(chart);
+   chartView = new ChartView(chart, this);
+   connect(deleteAction, &QAction::triggered, chartView, &ChartView::deletItem);
+
    chart->setAxisX(axisX);
    chart->setAxisY(axisYLeft);
    chart->addAxis(axisYRight, Qt::AlignRight);
@@ -194,7 +198,7 @@ void MainWindow::createChartSeries()
    ui->widget->setLayout(layout);
 
    ui->widget->layout()->addWidget(chartView);
-}
+} // MainWindow::createChartSeries
 
 
 void MainWindow::updateChart()
@@ -337,6 +341,19 @@ void MainWindow::on_HorizontalThreshold_triggered(bool checked)
    if (checked)
    {
       chartView->setMode(InsertThresholdHri);
+   }
+   else
+   {
+      chartView->setMode(None);
+   }
+}
+
+
+void MainWindow::on_actionLine_triggered(bool checked)
+{
+   if (checked)
+   {
+      chartView->setMode(InsertLine);
    }
    else
    {

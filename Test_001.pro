@@ -12,6 +12,8 @@ CONFIG += c++17
 SOURCES += \
     chartview.cpp \
     colordelegate.cpp \
+    graphicsitem.cpp \
+    lineitem.cpp \
     main.cpp \
     mainwindow.cpp \
     series.cpp \
@@ -21,6 +23,8 @@ SOURCES += \
 HEADERS += \
     chartview.h \
     colordelegate.h \
+    graphicsitem.h \
+    lineitem.h \
     mainwindow.h \
     series.h \
     spinboxthick.h

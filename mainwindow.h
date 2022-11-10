@@ -88,8 +88,11 @@ private slots:
 
    void on_HorizontalThreshold_triggered(bool checked);
 
+   void on_actionLine_triggered(bool checked);
+
 private:
    Ui::MainWindow        *ui;
+   QAction               *deleteAction;
 // TableModelSeries *TableSeries;
    QStandardItemModel    *TableSeries = nullptr;
    QVBoxLayout           *layout;
